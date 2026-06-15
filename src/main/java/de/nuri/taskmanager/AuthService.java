@@ -8,10 +8,12 @@ public class AuthService {
 	
 	private final UserRepository  repository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtService      jwtService;
 	
-	public AuthService(UserRepository repository, PasswordEncoder passwordEncoder) {
+	public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService) {
 		this.repository      = repository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtService      = jwtService;
 	}
 	
 	public User register(RegisterRequest request) {
@@ -37,6 +39,8 @@ public class AuthService {
 			throw new RuntimeException("Invalid email or password");
 		}
 		
-		return new LoginResponse("dummy-token");
+		String token = jwtService.generateToken(user.getEmail());
+		
+		return new LoginResponse(token);
 	}
 }
