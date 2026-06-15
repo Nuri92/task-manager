@@ -27,4 +27,16 @@ public class AuthService {
 		
 		return repository.save(user);
 	}
+	
+	public LoginResponse login(LoginRequest request) {
+		User user =
+				repository.findByEmail(request.getEmail())
+				          .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+		
+		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+			throw new RuntimeException("Invalid email or password");
+		}
+		
+		return new LoginResponse("dummy-token");
+	}
 }
