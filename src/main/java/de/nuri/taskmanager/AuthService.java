@@ -1,14 +1,17 @@
 package de.nuri.taskmanager;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 	
-	private final UserRepository repository;
+	private final UserRepository  repository;
+	private final PasswordEncoder passwordEncoder;
 	
-	public AuthService(UserRepository repository) {
-		this.repository = repository;
+	public AuthService(UserRepository repository, PasswordEncoder passwordEncoder) {
+		this.repository      = repository;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	public User register(RegisterRequest request) {
@@ -19,7 +22,7 @@ public class AuthService {
 		User user = new User(
 				request.getUsername(),
 				request.getEmail(),
-				request.getPassword()
+				passwordEncoder.encode(request.getPassword())
 		);
 		
 		return repository.save(user);
