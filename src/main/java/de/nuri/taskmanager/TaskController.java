@@ -1,13 +1,27 @@
 package de.nuri.taskmanager;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/tasks")
 public class TaskController {
 	
-	@GetMapping("/tasks")
-	public String getTasks() {
-		return "Protected endpoint";
+	private final TaskService service;
+	
+	public TaskController(TaskService service) {
+		this.service = service;
+	}
+	
+	@GetMapping
+	public List<Task> getTasks() {
+		return service.getTasks();
+	}
+	
+	@PostMapping
+	public Task addTask(@Valid @RequestBody TaskRequest request) {
+		return service.addTask(request);
 	}
 }
