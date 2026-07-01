@@ -14,6 +14,7 @@ public class User {
 	private String email;
 	private String password;
 	
+	
 	public User() {
 	}
 	
@@ -38,4 +39,5 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+	
 }

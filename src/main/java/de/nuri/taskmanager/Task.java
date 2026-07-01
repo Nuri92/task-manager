@@ -16,13 +16,18 @@ public class Task {
 	
 	private boolean done;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User owner;
+	
 	public Task() {
 	}
 	
-	public Task(String title, String description) {
+	public Task(String title, String description, User owner) {
 		this.title       = title;
 		this.description = description;
 		this.done        = false;
+		this.owner       = owner;
 	}
 	
 	public int getId() {
@@ -48,5 +53,9 @@ public class Task {
 	
 	public void markDone() {
 		this.done = true;
+	}
+	
+	public User getOwner() {
+		return owner;
 	}
 }

@@ -1,6 +1,7 @@
 package de.nuri.taskmanager;
 
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +17,14 @@ public class TaskController {
 	}
 	
 	@GetMapping
-	public List<Task> getTasks() {
-		return service.getTasks();
+	public List<Task> getTasks(Authentication authentication) {
+		String email = authentication.getName();
+		return service.getTasks(email);
 	}
 	
 	@PostMapping
-	public Task addTask(@Valid @RequestBody TaskRequest request) {
-		return service.addTask(request);
+	public Task addTask(@Valid @RequestBody TaskRequest request, Authentication authentication) {
+		String email = authentication.getName();
+		return service.addTask(request, email);
 	}
 }

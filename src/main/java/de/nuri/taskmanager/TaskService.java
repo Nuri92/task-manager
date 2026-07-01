@@ -8,17 +8,22 @@ import java.util.List;
 public class TaskService {
 	
 	private final TaskRepository repository;
+	private final UserRepository userRepository;
 	
-	public TaskService(TaskRepository repository) {
-		this.repository = repository;
+	public TaskService(TaskRepository repository, UserRepository userRepository) {
+		this.repository     = repository;
+		this.userRepository = userRepository;
 	}
 	
-	public List<Task> getTasks() {
-		return repository.findAll();
+	public List<Task> getTasks(String email) {
+		return repository.findByOwnerEmail(email);
 	}
 	
-	public Task addTask(TaskRequest request) {
-		Task task = new Task(request.getTitle(), request.getDescription());
+	public Task addTask(TaskRequest request, String email) {
+		User user = userRepository.findByEmail(email)
+		     .orElseThrow(() -> new RuntimeException("User not found"));
+		
+		Task task = new Task(request.getTitle(), request.getDescription(), user);
 		return repository.save(task);
 	}
 }
