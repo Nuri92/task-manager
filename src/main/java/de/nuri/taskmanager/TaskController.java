@@ -32,4 +32,9 @@ public class TaskController {
 	public Task getTask(@PathVariable int id, Authentication authentication) {
 		return service.getTaskById(id, authentication.getName());
 	}
+	
+	@PutMapping("/{id}")
+	public Task updateTask(@PathVariable int id, @RequestBody TaskRequest request, Authentication authentication) {
+		return service.updateTask(id, request, authentication.getName());
+	}
 }

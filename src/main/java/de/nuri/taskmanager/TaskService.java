@@ -32,4 +32,10 @@ public class TaskService {
 		                 .orElseThrow(() -> new RuntimeException("Task not found"));
 	}
 	
+	
+	public Task updateTask(int id, TaskRequest request, String email) {
+		Task task = getTaskById(id, email);
+		task.update(request.getTitle(), request.getDescription());
+		return repository.save(task);
+	}
 }
