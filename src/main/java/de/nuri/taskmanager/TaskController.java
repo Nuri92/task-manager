@@ -27,4 +27,9 @@ public class TaskController {
 		String email = authentication.getName();
 		return service.addTask(request, email);
 	}
+	
+	@GetMapping("/{id}")
+	public Task getTask(@PathVariable int id, Authentication authentication) {
+		return service.getTaskById(id, authentication.getName());
+	}
 }

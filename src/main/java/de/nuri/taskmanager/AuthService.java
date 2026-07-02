@@ -3,6 +3,8 @@ package de.nuri.taskmanager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthService {
 	
@@ -42,5 +44,12 @@ public class AuthService {
 		String token = jwtService.generateToken(user.getEmail());
 		
 		return new LoginResponse(token);
+	}
+	
+	public List<UserResponse> getAllUsers() {
+		return repository.findAll()
+		                 .stream()
+		                 .map(UserResponse::new)
+		                 .toList();
 	}
 }

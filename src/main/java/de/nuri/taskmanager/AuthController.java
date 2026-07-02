@@ -1,10 +1,9 @@
 package de.nuri.taskmanager;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,4 +23,10 @@ public class AuthController {
 	public LoginResponse login(@Valid @RequestBody LoginRequest request) {
 		return authService.login(request);
 	}
+	
+	@GetMapping("/users")
+	public List<UserResponse> getAllUser() {
+		return authService.getAllUsers();
+	}
+	
 }

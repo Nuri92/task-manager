@@ -21,9 +21,15 @@ public class TaskService {
 	
 	public Task addTask(TaskRequest request, String email) {
 		User user = userRepository.findByEmail(email)
-		     .orElseThrow(() -> new RuntimeException("User not found"));
+		                          .orElseThrow(() -> new RuntimeException("User not found"));
 		
 		Task task = new Task(request.getTitle(), request.getDescription(), user);
 		return repository.save(task);
 	}
+	
+	public Task getTaskById(int id, String email) {
+		return repository.findByIdAndOwnerEmail(id, email)
+		                 .orElseThrow(() -> new RuntimeException("Task not found"));
+	}
+	
 }
