@@ -43,4 +43,11 @@ public class TaskService {
 		Task task = getTaskById(id, email);
 		repository.delete(task);
 	}
+	
+	
+	public Task toggleDone(int id, String email) {
+		Task task = getTaskById(id, email);
+		task.toggleDone();
+		return repository.save(task);
+	}
 }

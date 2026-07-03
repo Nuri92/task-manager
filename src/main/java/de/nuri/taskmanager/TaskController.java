@@ -42,4 +42,9 @@ public class TaskController {
 	public void deleteTask(@PathVariable int id, Authentication authentication) {
 		service.deleteTask(id, authentication.getName());
 	}
+	
+	@PatchMapping("/{id}/done")
+	public Task toggleDone(@PathVariable int id, Authentication authentication) {
+		return service.toggleDone(id, authentication.getName());
+	}
 }

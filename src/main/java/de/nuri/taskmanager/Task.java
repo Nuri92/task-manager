@@ -51,8 +51,8 @@ public class Task {
 		this.description = description;
 	}
 	
-	public void markDone() {
-		this.done = true;
+	public void toggleDone() {
+		this.done = !this.done;
 	}
 	
 	public User getOwner() {
