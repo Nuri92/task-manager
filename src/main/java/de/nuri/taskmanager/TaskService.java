@@ -38,4 +38,9 @@ public class TaskService {
 		task.update(request.getTitle(), request.getDescription());
 		return repository.save(task);
 	}
+	
+	public void deleteTask(int id, String email) {
+		Task task = getTaskById(id, email);
+		repository.delete(task);
+	}
 }

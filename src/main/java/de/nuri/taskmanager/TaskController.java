@@ -37,4 +37,9 @@ public class TaskController {
 	public Task updateTask(@PathVariable int id, @RequestBody TaskRequest request, Authentication authentication) {
 		return service.updateTask(id, request, authentication.getName());
 	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteTask(@PathVariable int id, Authentication authentication) {
+		service.deleteTask(id, authentication.getName());
+	}
 }
