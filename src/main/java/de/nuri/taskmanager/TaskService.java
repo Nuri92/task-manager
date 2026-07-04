@@ -29,7 +29,7 @@ public class TaskService {
 	
 	public Task getTaskById(int id, String email) {
 		return repository.findByIdAndOwnerEmail(id, email)
-		                 .orElseThrow(() -> new RuntimeException("Task not found"));
+		                 .orElseThrow(() -> new TaskNotFoundException());
 	}
 	
 	
