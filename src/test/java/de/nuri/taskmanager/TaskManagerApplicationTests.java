@@ -64,6 +64,40 @@ class TaskManagerApplicationTests {
 		
 	}
 	
+	@Test
+	void shouldRejectDuplicationEmail() throws Exception {
+		String email = registerUser("duplicate");
+		
+		String json = """
+		              {
+		                  "username": "duplicate",
+		                  "email": "%s",
+		                  "password": "123456"
+		              }
+		              """.formatted(email);
+		
+		mockMvc.perform(post("/auth/register")
+				.contentType("application/json").content(json))
+		       .andExpect(status().isConflict());
+	}
+	
+	@Test
+	void shouldRejectedInvalidPassword() throws Exception {
+		String email = registerUser("invalidPassword");
+		
+		String json = """
+		              {
+		                 "email": "%s",
+		                 "password": "wrongPassword"
+		              }
+		              """.formatted(email);
+		
+		mockMvc.perform(post("/auth/login")
+				.contentType("application/json")
+				.content(json))
+		       .andExpect(status().isUnauthorized());
+	}
+	
 	private String registerUser(String username) throws Exception {
 		String email = username + System.currentTimeMillis() + "@test.de";
 		String json = """

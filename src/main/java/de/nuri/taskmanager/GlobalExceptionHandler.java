@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 			InvalidLoginException exception
 	) {
 		return ResponseEntity
-				.status(HttpStatus.CONFLICT)
+				.status(HttpStatus.UNAUTHORIZED)
 				.body(new ApiErrorResponse(
 						401,
 						exception.getMessage()
