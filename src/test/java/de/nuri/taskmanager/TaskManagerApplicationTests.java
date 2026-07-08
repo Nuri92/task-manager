@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +97,22 @@ class TaskManagerApplicationTests {
 				.contentType("application/json")
 				.content(json))
 		       .andExpect(status().isUnauthorized());
+	}
+	
+	@Test
+	void shouldDeleteOwnTask() throws Exception {
+		String email  = registerUser("deleteTask");
+		String token  = login(email);
+		int    taskId = createTask(token);
+		
+		mockMvc.perform(delete("/tasks/" + taskId)
+				.header("Authorization", "Bearer " + token))
+		       .andExpect(status().isOk());
+		
+		mockMvc.perform(get("/tasks/" + taskId)
+				.header("Authorization", "" +
+						"Bearer " + token))
+		       .andExpect(status().isNotFound());
 	}
 	
 	private String registerUser(String username) throws Exception {
