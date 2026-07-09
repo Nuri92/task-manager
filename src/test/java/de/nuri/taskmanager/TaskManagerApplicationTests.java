@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -136,6 +137,22 @@ class TaskManagerApplicationTests {
 		       .andExpect(status().isOk())
 		       .andExpect(jsonPath("$.title").value("new title"))
 		       .andExpect(jsonPath("$.description").value("new description"));
+	}
+	
+	@Test
+	void shouldToggleTaskDone() throws Exception {
+		String email  = registerUser("shouldToggle");
+		String token  = login(email);
+		int    taskId = createTask(token);
+		
+		mockMvc.perform(patch("/tasks/" + taskId + "/done")
+				.header("Authorization", "Bearer " + token))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.done").value(true));
+		
+		mockMvc.perform(patch("/tasks/" + taskId + "/done")
+				.header("Authorization", "Bearer " + token))
+		       .andExpect(jsonPath("$.done").value(false));
 	}
 	
 	private String registerUser(String username) throws Exception {
