@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -113,6 +114,28 @@ class TaskManagerApplicationTests {
 				.header("Authorization", "" +
 						"Bearer " + token))
 		       .andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void shouldUpdateOwnTask() throws Exception {
+		String email  = registerUser("updateTask");
+		String token  = login(email);
+		int    taskId = createTask(token);
+		
+		String json = """
+		              {
+		              "title": "new title",
+		              "description": "new description"
+		              }
+		              """;
+		
+		mockMvc.perform(put("/tasks/" + taskId)
+				.header("Authorization", "Bearer " + token)
+				.contentType("application/json")
+				.content(json))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.title").value("new title"))
+		       .andExpect(jsonPath("$.description").value("new description"));
 	}
 	
 	private String registerUser(String username) throws Exception {
